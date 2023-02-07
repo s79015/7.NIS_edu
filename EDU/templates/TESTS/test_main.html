@@ -1,4 +1,35 @@
-{% extends 'base.html' %}
+{% extends 'MAIN/base.html' %}
+
+{% block head %}
+<ul class="navbar">
+    <li class="navbar" ><a href="#home" class="active">Home</a></li>
+    <li  class="navbar"><a href="#news">News</a></li>
+    <li  class="navbar"><a href="#contact">Contact</a></li>
+    <li  class="navbar"><a href="#about">About</a></li>
+
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          {% if user.is_authenticated %}
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Welcome, {{user.username}}</a>
+          </li>
+    
+          {% else %}
+    
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+    
+          {% endif %}
+        </ul>
+      </div>
+</ul>
+
+{% endblock %}
 
 {% block materials%}
     {% comment %} <video width='400' controls controlsList="nodownload">
@@ -16,7 +47,7 @@
 
     <ul class="horbar">
        
-    {% for subject, course in lessons.items %}
+    {% for subject, course in test.items %}
         <li> {{subject}} </li>
         
         <ul class="horbar">
@@ -42,8 +73,24 @@
   
   
   
-  {{ math }}
+  {% comment %} {{ math }} {% endcomment %}
+
+  <form action="/action_page.php">
+    
+        {% for question, answers in test_questions.items %}
+            <p>{{question}}:</p>
+            {% for answer in answers %}
+                <input type="radio" id={{answer}} name={{question}} value={{answer}}>
+                <label for={{answer}}>{{answer}}</label><br>
+            {% endfor %}
+        {% endfor %}
+        <br>  
+    
+        
+    <input type="submit" value="Submit">
+  </form>
 
   
+  {% comment %} {{test_questions}} {% endcomment %}
   
 {% endblock%}

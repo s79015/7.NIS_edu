@@ -20,13 +20,11 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>    
 </head>
 <body>
+
+    {% block register_login %}
+    {% endblock%}
+
     {% block head %}
-    <ul class="navbar">
-        <li class="navbar" ><a href="#home" class="active">Home</a></li>
-        <li  class="navbar"><a href="#news">News</a></li>
-        <li  class="navbar"><a href="#contact">Contact</a></li>
-        <li  class="navbar"><a href="#about">About</a></li>
-    </ul>
     {% endblock%}
 
     {% block nav_hor %}
@@ -35,11 +33,7 @@
     {% block materials%}
     {% endblock   %}
 
-
-
     {% block tests%}
-    
-
     {% endblock   %}
 
 

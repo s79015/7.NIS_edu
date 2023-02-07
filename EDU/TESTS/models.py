@@ -19,4 +19,11 @@ class Test(models.Model):
     test_question = models.CharField(max_length=100000, blank=True)
     test_answer = models.CharField(max_length=100000, blank=True)
     def __str__(self):
-        return self.name
+        return self.test_question
+
+
+class Test_error_answers(models.Model):
+    test_question = models.ForeignKey(Test, on_delete=models.CASCADE)
+    test_error_answer = models.CharField(max_length=100000, blank=True)
+    def __str__(self):
+        return self.test_error_answer

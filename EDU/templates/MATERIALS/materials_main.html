@@ -1,4 +1,35 @@
-{% extends 'base.html' %}
+{% extends 'MAIN/base.html' %}
+
+{% block head %}
+<ul class="navbar">
+    <li class="navbar" ><a href="#home" class="active">Home</a></li>
+    <li  class="navbar"><a href="#news">News</a></li>
+    <li  class="navbar"><a href="#contact">Contact</a></li>
+    <li  class="navbar"><a href="#about">About</a></li>
+
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          {% if user.is_authenticated %}
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Welcome, {{user.username}}</a>
+          </li>
+    
+          {% else %}
+    
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+    
+          {% endif %}
+        </ul>
+      </div>
+</ul>
+
+{% endblock %}
 
 {% block materials%}
     {% comment %} <video width='400' controls controlsList="nodownload">
