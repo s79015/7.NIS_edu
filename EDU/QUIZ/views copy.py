@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Test, Test_error_answers
 
 import random
@@ -66,3 +66,33 @@ def content(request):
 
     context = {'test_content':result}
     return render(request, 'TESTS/test_main.html', context)
+
+
+
+def display_question(request, quiz_id, question_id):
+    quiz = get_object_or_404(Test, pk=quiz_id)
+    # fetch ALL of the questions to find current and next question
+    questions = quiz.question_set.all()
+    current_question, next_question = None, None
+    for ind, question in enumerate(questions):
+        if question.pk == question_id:
+            current_question = question
+            if ind != len(questions) - 1:
+                next_question = questions[ind + 1]
+
+    return render(
+        request,
+        "quizzes/display.html",
+        {"quiz": quiz, "question": current_question, "next_question": next_question},
+    )
+
+
+def grade_question(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    answer = getattr(question, "multiplechoiceanswer", None) or getattr(question, "freetextanswer")
+    is_correct = answer.is_correct(request.POST.get("answer"))
+    return render(
+        request,
+        "quizzes/partial.html",
+        {"is_correct": is_correct, "correct_answer": answer.correct_answer},
+    )

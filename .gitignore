@@ -1,2 +1,4 @@
 env/
 EDU/media/
+EDU/db.sqlite3
+EDU/whole.json

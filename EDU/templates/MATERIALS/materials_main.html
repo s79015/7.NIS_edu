@@ -2,50 +2,24 @@
 
 {% block head %}
 <ul class="navbar">
+    <li class="navbar"><a class="nav-link" href="#">Добро пожаловать {{user.username}}</a></li>
     <li class="navbar" ><a href="#home" class="active">Home</a></li>
     <li  class="navbar"><a href="#news">News</a></li>
     <li  class="navbar"><a href="#contact">Contact</a></li>
     <li  class="navbar"><a href="#about">About</a></li>
+   
+    <li class="navbar"><a class="nav-link" href={% url "main:logout" %}>Logout</a></li>
+    
 
-    <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav mr-auto">
-          {% if user.is_authenticated %}
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/logout">Logout</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Welcome, {{user.username}}</a>
-          </li>
     
-          {% else %}
-    
-          <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
-          </li>
-    
-          {% endif %}
-        </ul>
-      </div>
 </ul>
 
 {% endblock %}
 
-{% block materials%}
-    {% comment %} <video width='400' controls controlsList="nodownload">
-        <source src='{{ MEDIA_URL }}{{ video }}' type='video/mp4'>
-        Your browser does not support the video tag.
-    </video> {% endcomment %}
+{% block nav_ver %}
 
 
-    
-{% endblock   %}
-
-{% block nav_hor %}
-
-<p> </p>
-
-    <ul class="horbar">
+    {% comment %} <ul class="horbar">
        
     {% for subject, course in lessons.items %}
         <li> {{subject}} </li>
@@ -64,18 +38,92 @@
         </ul>
     {%endfor%}
 
-    </ul>
+    </ul> {% endcomment %}
 
+    <div class="sidenav">
 
-    <script type="text/javascript" id="MathJax-script" async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js">
+      {% for subject, course in lessons.items %}
+        <button class="dropdown-btn"> {{subject}}
+          <i class="fa fa-caret-down"></i>
+        </button>
+
+        <div class="dropdown-container">
+        
+              {% for course, lessons in course.items %}
+                <button class="dropdown-btn"> {{course}}
+                  <i class="fa fa-caret-down"></i>
+                </button>
+
+                <div class="dropdown-container">
+                        {% for lesson in lessons %}
+                          <a href="#">{{lesson}}</a> 
+                        {%endfor%}
+                </div>
+              {%endfor%}
+                    
+        </div>
+            
+      {%endfor%}
+    </div>   
+  <script>
+    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+    
+    for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var dropdownContent = this.nextElementSibling;
+        if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+        } else {
+          dropdownContent.style.display = "block";
+        }
+      });
+    }
     </script>
-  
-  
-  
-  
-
-  When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are
-  \[x = {-b \pm \sqrt{b^2-4ac} \over 2a}.\]
+    
   
 {% endblock%}
+
+
+{% block materials %}
+    {% comment %} <video width='400' controls controlsList="nodownload">
+        <source src='{{ MEDIA_URL }}{{ video }}' type='video/mp4'>
+        Your browser does not support the video tag.
+    </video> {% endcomment %}
+
+
+
+    
+
+<div id="app">
+  <div>[[ message ]]</div>
+</div>
+
+{% comment %} {{ username|json_script:"username" }} {% endcomment %}
+
+<script>
+{% comment %} var username = JSON.parse(document.getElementById('username').textContent); {% endcomment %}
+
+  const { createApp } = Vue
+
+  const app = createApp({
+    data() {
+      return {
+        message: 'When \\(a \\ne 0\\), there are two solutions to \\(ax^2 + bx + c = 0\\) and they are\\[x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.\\]'
+      }
+    }
+  })
+  
+  // Delimiters changed to ES6 template string style
+  app.config.compilerOptions.delimiters = ['[[', ']]']
+  app.mount('#app')
+
+</script>
+
+{% endblock   %}
+
+
+
+{% comment %} When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are\[x = {-b \pm \sqrt{b^2-4ac} \over 2a}.\ {% endcomment %}

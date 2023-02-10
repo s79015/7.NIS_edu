@@ -4,6 +4,8 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+app_name = "materials"   
+
 urlpatterns = [
     
     path("", views.nav_hor, name="base" ),
