@@ -7,11 +7,16 @@
   {% load static %}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
   
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>  
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> 
+    <!-- LATEX --> 
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    {% comment %} <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>  {% endcomment %}
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+
   <link rel="stylesheet" href="{% static 'CSS/quiz.css' %}">
 </head>
 <body>
+
+    {% if user.is_authenticated %}
     <div class="container">
     <h1>Quiz: {{ quiz.name }}</h1>
 
@@ -21,7 +26,7 @@
         {% csrf_token %}
 
         <fieldset class="form-group">
-            <legend>{{ question.prompt }}</legend>
+            <legend>{{ question.question_text }}</legend>
             {% if question.freetextanswer %}
             <div class="form-group">
             <label for="answer">
@@ -69,8 +74,11 @@
             .then((response) => response.text())
             .then(text => {
                 document.getElementById("question-feedback").innerHTML = text;
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             });
     });
     </script>
+
+{% endif %}
 </body>
 </html>

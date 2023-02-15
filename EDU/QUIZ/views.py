@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 
-from .models import Quiz, Question
+from .models import Quiz, Question, UserAnswers
 
 
 class IndexView(generic.ListView):
@@ -38,6 +38,16 @@ def grade_question(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     answer = getattr(question, "multiplechoiceanswer", None) or getattr(question, "freetextanswer")
     is_correct = answer.is_correct(request.POST.get("answer"))
+    if request.user.is_authenticated:
+        print(request.user)
+        u = UserAnswers(user_name = request.user, 
+                        quiz_name = question.quiz,     
+                        quiz_hash_name = question.hash_name,
+                        question = question,
+                        user_answer_is_correct = is_correct,
+                        user_spend_time = 10
+                    )
+        u.save()
     return render(
         request,
         "QUIZ/partial.html",

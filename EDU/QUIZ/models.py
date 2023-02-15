@@ -1,7 +1,14 @@
 from django.db import models
 from django.contrib.postgres import fields
+from django.conf import settings
+
+import datetime
 
 from django_better_admin_arrayfield.models.fields import ArrayField
+
+
+
+    
 
 class Quiz(models.Model):
     name = models.CharField(max_length=100)
@@ -9,13 +16,26 @@ class Quiz(models.Model):
     def __str__(self):
         return self.name
 
+class QuestionHash(models.Model):
+    hash_name = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.hash_name
+
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    prompt = models.CharField(max_length=200)
+    hash_name = models.ForeignKey(QuestionHash, on_delete=models.CASCADE, null=True, blank=True)
+   
+    # prompt = models.CharField(max_length=200)
+    question_text = models.CharField(max_length=200)
+
+    question_solution = models.CharField(max_length=10000,  null=True, blank=True)
+   
+
 
     def __str__(self):
-        return self.prompt
+        return self.question_text
 
 
 class Answer(models.Model):
@@ -47,5 +67,14 @@ class MultipleChoiceAnswer(Answer):
 
     def is_correct(self, user_answer):
         return user_answer == self.correct_answer
+
+class UserAnswers(models.Model):
+    user_name = models.ForeignKey(settings.AUTH_USER_MODEL,  on_delete=models.PROTECT)
+    quiz_name = models.ForeignKey(Quiz, on_delete=models.PROTECT)
+    quiz_hash_name = models.ForeignKey(QuestionHash, on_delete=models.PROTECT, null=True, blank=True)
+    question = models.ForeignKey(Question, on_delete=models.PROTECT, null=True, blank=True)
+    user_answer_is_correct = models.BooleanField()
+    user_spend_time = models.IntegerField(null=True, blank=True)
+    answer_date = models.DateTimeField(default=datetime.datetime.now())
 
 

@@ -67,28 +67,29 @@
     </ul>
 
 
-    <script type="text/javascript" id="MathJax-script" async
+    {% comment %} <script type="text/javascript" id="MathJax-script" async
       src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js">
     </script>
   
-  
+   {% endcomment %}
   
   {% comment %} {{ math }} {% endcomment %}
 
-  <form action="/action_page.php">
+  {% comment %} <form >
     
         {% for question, answers in test_questions.items %}
             <p>{{question}}:</p>
             {% for answer in answers %}
                 <input type="radio" id={{answer}} name={{question}} value={{answer}}>
-                <label for={{answer}}>{{answer}}</label><br>
+                <label for={{answer}}>{{answer}}</label>
+                <br>
             {% endfor %}
         {% endfor %}
         <br>  
     
         
-    <input type="submit" value="Submit">
-  </form>
+        <input type="submit" value="Submit">
+  </form> {% endcomment %}
 
   
   {% comment %} {{test_questions}} {% endcomment %}
