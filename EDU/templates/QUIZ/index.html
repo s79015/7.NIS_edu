@@ -1,25 +1,58 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Quizzes</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-    
-</head>
-<body>
-    <div class="container">
-        <h1>Quizzes</h1>
-{% if quiz_list %}
-    <ul>
-    {% for quiz in quiz_list %}
-        <li><a href="{% url 'quiz:display_quiz' quiz.id %}">{{ quiz.name }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No quizzes are available.</p>
-{% endif %}
-    </div>
+{% extends 'MAIN/base.html' %}
 
-</body>
-</html>
+{% block title %}
+  <title>Quizzes</title>
+{% endblock %}
+
+{% block head %}
+
+<ul class="navbar">
+    <li class="navbar" ><a href="#home" class="active">Home</a></li>
+    <li  class="navbar"><a href="#news">News</a></li>
+    <li  class="navbar"><a href="#contact">Contact</a></li>
+    <li  class="navbar"><a href="#about">About</a></li>
+
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          {% if user.is_authenticated %}
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Welcome, {{user.username}}</a>
+          </li>
+    
+          {% else %}
+    
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+    
+          {% endif %}
+        </ul>
+      </div>
+</ul>
+
+{% endblock %}
+
+{% block nav_hor %}
+
+<div class="container">
+    <h1>Quizzes</h1>
+    {% if quiz_list %}
+        <ul>
+        {% for quiz in quiz_list %}
+            <li><a href="{% url 'quiz:display_quiz' quiz.id %}">{{ quiz.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No quizzes are available.</p>
+    {% endif %}
+</div>
+
+  
+{% endblock%}
+
+  
+   
