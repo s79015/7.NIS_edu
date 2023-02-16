@@ -34,15 +34,24 @@ def display_question(request, quiz_id, question_id):
     )
 
 
-def grade_question(request, question_id):
+def grade_question(request, question_id, lg):
     question = get_object_or_404(Question, pk=question_id)
-    answer = getattr(question, "multiplechoiceanswer", None) or getattr(question, "freetextanswer")
+    if lg == 'rus':
+        answer = getattr(question, "multiplechoiceanswerrus", None) or getattr(question, "freetextanswerrus")
+        correct_answer = answer.correct_answer_rus
+    elif lg == 'kaz':
+        answer = getattr(question, "multiplechoiceanswerkaz", None) or getattr(question, "freetextanswerkaz")
+        correct_answer = answer.correct_answer_kaz
+    else:
+        answer = ''
+        correct_answer = ''
+
     is_correct = answer.is_correct(request.POST.get("answer"))
     if request.user.is_authenticated:
         print(request.user)
         u = UserAnswers(user_name = request.user, 
                         quiz_name = question.quiz,     
-                        quiz_hash_name = question.hash_name,
+                        quiz_hash_name = question.hash_name_rus,
                         question = question,
                         user_answer_is_correct = is_correct,
                         user_spend_time = 10
@@ -51,5 +60,7 @@ def grade_question(request, question_id):
     return render(
         request,
         "QUIZ/partial.html",
-        {"is_correct": is_correct, "correct_answer": answer.correct_answer},
+        {"is_correct": is_correct, "correct_answer": correct_answer},
     )
+
+

@@ -50,7 +50,7 @@
 {% block tests %}
     <section class="question">
     {% if question %}
-        <form id="question-form" action="{% url 'quiz:grade_question' question.id %}" method="post">
+        <form id="question-form" action="{% url 'quiz:grade_question' question.id 'rus' %}" method="post">
             {% csrf_token %}
 
             <fieldset class="form-group">
