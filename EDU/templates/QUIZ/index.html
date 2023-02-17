@@ -40,10 +40,15 @@
 
 <div class="container">
     <h1>Quizzes</h1>
+    $$\frac{y}{x} = \frac{7}{5}:\frac{10}{21} = \frac{7}{5} \cdot \frac{21}{10} = \frac{147}{50}$$
+
+    $\frac{y}{x} = \frac{147}{50}$.
+
+Ответ: $\frac{y}{x} = \frac{147}{50}$.
     {% if quiz_list %}
         <ul>
         {% for quiz in quiz_list %}
-            <li><a href="{% url 'quiz:display_quiz' quiz.id %}">{{ quiz.name }}</a></li>
+            <li><a href="{% url 'quiz:display_quiz' quiz.id %}">{{ quiz.name_rus }}</a></li>
         {% endfor %}
         </ul>
     {% else %}
