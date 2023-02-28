@@ -1,50 +1,60 @@
 {% extends 'MAIN/base.html' %}
 
 {% block title %}
-  <title>Quizzes</title>
+  <title>Тест</title>
 {% endblock %}
 
-{% block head %}
+{% block nav %}
 
 <ul class="navbar">
-    <li class="navbar" ><a href="#home" class="active">Home</a></li>
-    <li  class="navbar"><a href="#news">News</a></li>
-    <li  class="navbar"><a href="#contact">Contact</a></li>
-    <li  class="navbar"><a href="#about">About</a></li>
+  <li class="navbar"><a class="nav-link" href="#">Добро пожаловать {{user.username}}</a></li>
+  <li class="navbar" ><a href="#home" class="active">Home</a></li>
+  <li  class="navbar"><a href="#news">News</a></li>
+  <li  class="navbar"><a href="#contact">Contact</a></li>
+  <li  class="navbar"><a href="#about">About</a></li>
+ 
+  <li class="navbar"><a class="nav-link" href={% url "main:logout" %}>Logout</a></li>
 
-    <div class="collapse navbar-collapse" id="navbarText">
+    {% comment %} <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
           {% if user.is_authenticated %}
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/logout">Logout</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Welcome, {{user.username}}</a>
-          </li>
-    
+            <li class="nav-item">
+              <a class="nav-link" href="#">Welcome, {{user.username}}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
           {% else %}
     
-          <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
     
           {% endif %}
         </ul>
-      </div>
+      </div> {% endcomment %}
 </ul>
 
 {% endblock %}
 
-{% block nav_hor %}
+{% block nav_v %}
 
 <div class="container">
     <h1>Quizzes</h1>
-    $$\frac{y}{x} = \frac{7}{5}:\frac{10}{21} = \frac{7}{5} \cdot \frac{21}{10} = \frac{147}{50}$$
+    {% comment %} Расстояние на местности в 20 м изображено на плане отрезком в 1 см. Определите масштаб плана.\\
+Решение:\\
+Масштаб плана - это отношение длины отрезка на плане к соответствующей ему длине на местности. По условию, 20 м на местности изображено на плане отрезком длиной 1 см. Таким образом, масштаб плана можно выразить как:
 
-    $\frac{y}{x} = \frac{147}{50}$.
+$$\frac{\text{длина на плане}}{\text{длина на местности}} = \frac{1\ \text{см}}{20\ \text{м}}$$
 
-Ответ: $\frac{y}{x} = \frac{147}{50}$.
+Однако, чтобы получить безразмерное отношение между длиной на плане и длиной на местности, необходимо привести их к одной единице измерения. 
+
+Тогда масштаб плана можно записать как:
+
+$$\frac{1\ \text{см}}{20\ \text{м}} = \frac{1\ \text{см}}{2000} $$
+
+Таким образом, масштаб плана равен 1:2000. \\
+Ответ: 1:2000\\ {% endcomment %}
     {% if quiz_list %}
         <ul>
         {% for quiz in quiz_list %}

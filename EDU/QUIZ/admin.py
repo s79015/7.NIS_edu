@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Quiz, Question, FreeTextAnswerRus, FreeTextAnswerKaz, MultipleChoiceAnswerRus, MultipleChoiceAnswerKaz,UserAnswers, QuestionHash
+from .models import Quiz, Question, FreeTextAnswerRus, FreeTextAnswerKaz, MultipleChoiceAnswerRus, MultipleChoiceAnswerKaz,UserAnswers, QuestionHash, Subject
 from django_better_admin_arrayfield.admin.mixins import DynamicArrayMixin
 from django.utils.safestring import mark_safe
 
@@ -55,7 +55,10 @@ class QuestionHashAdmin(admin.ModelAdmin):
 
 
 
-
+class SubjectAdmin(admin.ModelAdmin):
+     # list_display = [field.name for field in Question._meta.get_fields()]
+     list_display = ['name_rus', 'name_kaz']
+     ordering = ('name_rus',)
 
 
 admin.site.register(Quiz, QuizAdmin)
@@ -66,3 +69,6 @@ admin.site.register(MultipleChoiceAnswerRus, MultipleChoiceAnswerRusAdmin)
 admin.site.register(MultipleChoiceAnswerKaz, MultipleChoiceAnswerKazAdmin)
 admin.site.register(UserAnswers, UserAnswersAdmin)
 admin.site.register(QuestionHash, QuestionHashAdmin)
+admin.site.register(Subject, SubjectAdmin)
+
+

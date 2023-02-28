@@ -7,10 +7,16 @@ import datetime
 from django_better_admin_arrayfield.models.fields import ArrayField
 
 
+class Subject(models.Model):
+    name_rus = models.CharField(max_length=100, null=True, blank=True)
+    name_kaz= models.CharField(max_length=100, null=True, blank=True)
 
+    def __str__(self):
+        return self.name_rus
     
 
 class Quiz(models.Model):
+    subject_name = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, blank=True)
     name_rus = models.CharField(max_length=100, null=True, blank=True)
     name_kaz= models.CharField(max_length=100, null=True, blank=True)
 

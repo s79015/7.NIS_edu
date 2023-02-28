@@ -23,7 +23,7 @@
 
     <!-- CSS --> 
     <link rel="stylesheet" href="{% static 'CSS/base.css' %}">
-    <title>Материалы для обучения</title>
+    <title>Подготовка к НИШ</title>
 
     <!-- LATEX --> 
     {% comment %} <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -52,24 +52,23 @@
 
     
 
-        {% block register_login %}
-        {% endblock %}
+    {% block register_login %}
+    {% endblock %}
 
     {% if user.is_authenticated %}
 
     <div class="container-fluid">
         <div class="row">
-            {% block head %}
+            {% block nav %}
             {% endblock %}
         </div>
         
         <div class="row">
                 <div class="col-sm-4">
 
-                    {% block nav_hor %}
+                    {% block nav_v %}
                     {% endblock%}  
                 </div>
-
 
                 <div class="col-sm-8">
 

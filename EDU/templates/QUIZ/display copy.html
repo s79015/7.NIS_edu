@@ -29,24 +29,24 @@
             <legend>{{ question.question_text }}</legend>
             {% if question.freetextanswer %}
             <div class="form-group">
-            <label for="answer">
-            {% if question.freetextanswer.case_sensitive %}
-            Type your answer in (capitalization matters!):
-            {% else %}
-            Type your answer in (don't worry about capitalization):
-            {% endif %}
-            </label>
-            <input type="text" name="answer" class="form-control">
+                <label for="answer">
+                    {% if question.freetextanswer.case_sensitive %}
+                    Type your answer in (capitalization matters!):
+                    {% else %}
+                    Type your answer in (don't worry about capitalization):
+                    {% endif %}
+                </label>
+                <input type="text" name="answer" class="form-control">
             </div>
             {% else %}
-            {% for choice in question.multiplechoiceanswer.choices %}
-            <div class="radio">
-            <label>
-                <input type="radio" name="answer" value="{{ choice }}">
-                {{ choice}}
-            </label>
-            </div>
-            {% endfor %}
+                {% for choice in question.multiplechoiceanswer.choices %}
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="answer" value="{{ choice }}">
+                        {{ choice}}
+                    </label>
+                </div>
+                {% endfor %}
             {% endif %}
         </fieldset>
         <button type="submit" class="btn btn-primary">Check answers</button>

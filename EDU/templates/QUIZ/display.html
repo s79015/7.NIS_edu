@@ -4,7 +4,7 @@
     <h1>Quiz: {{ quiz.name }}</h1>
 {% endblock %}
 
-{% block head %}
+{% block nav %}
     <ul class="navbar">
         <li class="navbar" ><a href="#home" class="active">Home</a></li>
         <li  class="navbar"><a href="#news">News</a></li>
@@ -32,7 +32,7 @@
 
 
 
-{% block nav_hor %}
+{% block nav_v %}
     <div class="container">
         <h1>Quizzes</h1>
         {% if quiz_list %}
@@ -48,17 +48,29 @@
 {% endblock %}
 
 {% block tests %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <span id="minutes"></span>:<span id="seconds"></span>
+
+    <script type="text/javascript">
+        var sec = 0;
+        function pad (val) {return val > 9 ? val : "0" + val; }
+        setInterval( function(){
+            $("#seconds").html(pad(++sec%60));
+            $("#minutes").html(pad(parseInt(sec/60,10)));
+        }, 1000);
+    </script>
+    
     <section class="question">
     {% if question %}
         <form id="question-form" action="{% url 'quiz:grade_question' question.id  %}" method="post">
             {% csrf_token %}
 
             <fieldset class="form-group">
-                <legend>{{ question.question_text }}</legend>
-                {% if question.freetextanswer %}
+                <legend>{{ question.question_text_rus }}</legend>
+                {% if question.freetextanswerrus %}
                 <div class="form-group">
                     <label for="answer">
-                        {% if question.freetextanswer.case_sensitive %}
+                        {% if question.freetextanswerrus.case_sensitive %}
                             Type your answer in (capitalization matters!):
                         {% else %}
                             Type your answer in (don't worry about capitalization):
@@ -68,7 +80,7 @@
                     <input type="text" name="answer" class="form-control">
                 </div>
                 {% else %}
-                    {% for choice in question.multiplechoiceanswer.choices %}
+                    {% for choice in question.multiplechoiceanswerrus.choices %}
                         <div class="radio">
                             <label>
                                 <input type="radio" name="answer" value="{{ choice }}">
@@ -96,17 +108,19 @@
     </div>
 
     <script>
-    const form = document.getElementById("question-form");
-    form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        fetch(form.action, {method:'post', body: new FormData(form)})
-            .then((response) => response.text())
-            .then(text => {
-                document.getElementById("question-feedback").innerHTML = text;
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-            });
-    });
+        const form = document.getElementById("question-form");
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            fetch(form.action, {method:'post', body: new FormData(form)})
+                .then((response) => response.text())
+                .then(text => {
+                    document.getElementById("question-feedback").innerHTML = text;
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+                });
+        });
     </script>
+
+    
 
 
 
