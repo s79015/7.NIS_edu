@@ -47,8 +47,9 @@ def grade_question(request, question_id):
     #     correct_answer = ''
     answer = getattr(question, "multiplechoiceanswerrus", None) or getattr(question, "freetextanswerrus")
     correct_answer = answer.correct_answer_rus
-
     is_correct = answer.is_correct(request.POST.get("answer"))
+    seconds = request.POST.get("seconds_post")
+    print("seconds", seconds)
     if request.user.is_authenticated:
         print(request.user)
         u = UserAnswers(user_name = request.user, 
@@ -56,7 +57,7 @@ def grade_question(request, question_id):
                         quiz_hash_name = question.hash_name_rus,
                         question = question,
                         user_answer_is_correct = is_correct,
-                        user_spend_time = 10
+                        user_spend_time = int(seconds)
                     )
         u.save()
     return render(

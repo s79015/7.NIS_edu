@@ -1,33 +1,21 @@
 {% extends 'MAIN/base.html' %}
 
-{% block title %}
+{% comment %} {% block title %}
     <h1>Quiz: {{ quiz.name }}</h1>
-{% endblock %}
+{% endblock %} {% endcomment %}
 
 {% block nav %}
-    <ul class="navbar">
-        <li class="navbar" ><a href="#home" class="active">Home</a></li>
-        <li  class="navbar"><a href="#news">News</a></li>
-        <li  class="navbar"><a href="#contact">Contact</a></li>
-        <li  class="navbar"><a href="#about">About</a></li>
+<ul class="navbar">
+    <li class="navbar"><a>Здравствуйте {{user.username}}</a></li>
+    <li class="navbar" ><a class="nav-link"href={% url "materials:base" %} >Материалы</a></li>
+    <li  class="navbar"><a href={% url "quiz:base" %} class="active">Тесты</a></li>
+    <li  class="navbar"><a href="#contact">Контакты</a></li>
+    <li  class="navbar"><a href="#about">О нас</a></li>
 
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-            {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Welcome, {{user.username}}</a>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-            {% endif %}
-            </ul>
-        </div>
-    </ul>
+   
+
+    <li class="navbar navbar-right"><a class="nav-link" href={% url "main:logout" %}>Выйти</a></li>
+</ul>
 {% endblock %}
 
 
@@ -49,31 +37,38 @@
 
 {% block tests %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <span id="minutes"></span>:<span id="seconds"></span>
+    <span hidden id="minutes"></span>   <span hidden>:</span>    <span hidden id="seconds"></span>
 
-    <script type="text/javascript">
+    {% comment %} <script type="text/javascript">
         var sec = 0;
         function pad (val) {return val > 9 ? val : "0" + val; }
         setInterval( function(){
             $("#seconds").html(pad(++sec%60));
             $("#minutes").html(pad(parseInt(sec/60,10)));
         }, 1000);
-    </script>
+        console.log($("#seconds").text);
+        console.log($("#minutes").text);
+    </script> {% endcomment %}
     
     <section class="question">
     {% if question %}
+
         <form id="question-form" action="{% url 'quiz:grade_question' question.id  %}" method="post">
             {% csrf_token %}
 
             <fieldset class="form-group">
+               
+                <input type='hidden' name='seconds_post' id='seconds_post' value=''>
                 <legend>{{ question.question_text_rus }}</legend>
                 {% if question.freetextanswerrus %}
                 <div class="form-group">
                     <label for="answer">
                         {% if question.freetextanswerrus.case_sensitive %}
-                            Type your answer in (capitalization matters!):
+                            {% comment %} Type your answer in (capitalization matters!): {% endcomment %}
+                            Напишите ответ (заглавные буквы имеют значение)
                         {% else %}
-                            Type your answer in (don't worry about capitalization):
+                            {% comment %} Type your answer in (don't worry about capitalization): {% endcomment %}
+                            Напишите ответ (заглавные буквы не имеют значение)
                         {% endif %}
                     </label>
 
@@ -95,6 +90,8 @@
 
         <div id="question-feedback" style="margin-top:16px">
         </div>
+
+
     {% else %}
     Sorry, that question doesn't exist in this quiz.
     {% endif %}
@@ -108,16 +105,38 @@
     </div>
 
     <script>
+        var sec = 0;
+        function pad (val) {return val > 9 ? val : "0" + val; }
+        var myInterval = setInterval( function(){
+            $("#seconds").html(pad(++sec%60));
+            document.getElementById("seconds_post").value = document.getElementById("seconds").textContent;
+            $("#minutes").html(pad(parseInt(sec/60,10)));
+        }, 1000);
+
+        function myStopFunction() {
+            clearInterval(myInterval);
+        }
+        
+
         const form = document.getElementById("question-form");
         form.addEventListener("submit", (e) => {
+            
+            
             e.preventDefault();
+            
             fetch(form.action, {method:'post', body: new FormData(form)})
                 .then((response) => response.text())
                 .then(text => {
                     document.getElementById("question-feedback").innerHTML = text;
+                    
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
                 });
+            myStopFunction()
+            $("input[name=answer]").prop('disabled', true);
+            $(":input[type=submit]").prop('disabled', true);
         });
+
+        
     </script>
 
     

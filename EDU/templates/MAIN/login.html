@@ -5,7 +5,7 @@
 {% include 'MAIN/messages.html' %}
 <!--Login--> 
 <div class="container py-5">
-  <h1>Login</h1>
+  <h1>Логин</h1>
   <form method="POST">
     {% csrf_token %}
     {{ login_form|crispy }}

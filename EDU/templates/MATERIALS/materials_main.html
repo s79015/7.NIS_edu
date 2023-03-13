@@ -2,16 +2,13 @@
 
 {% block nav %}
 <ul class="navbar">
-    <li class="navbar"><a class="nav-link" href="#">Добро пожаловать {{user.username}}</a></li>
-    <li class="navbar" ><a href="#home" class="active">Home</a></li>
-    <li  class="navbar"><a href="#news">News</a></li>
-    <li  class="navbar"><a href="#contact">Contact</a></li>
-    <li  class="navbar"><a href="#about">About</a></li>
+    <li class="navbar"><a class="nav-link" href="#">Здравствуйте {{user.username}}</a></li>
+    <li class="navbar" ><a href={% url "materials:base" %} class="active">Материалы</a></li>
+    <li  class="navbar"><a href={% url "quiz:base" %}>Тесты</a></li>
+    <li  class="navbar"><a href="#contact">Контакты</a></li>
+    <li  class="navbar"><a href="#about">О нас</a></li>
    
-    <li class="navbar"><a class="nav-link" href={% url "main:logout" %}>Logout</a></li>
-    
-
-    
+    <li class="navbar"><a class="nav-link" href={% url "main:logout" %}>Выйти</a></li>
 </ul>
 
 {% endblock %}
